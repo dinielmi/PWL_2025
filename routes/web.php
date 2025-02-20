@@ -1,7 +1,14 @@
 <?php       //menandakan bahwa file ini merupakan file php
 
+use App\Http\Controllers\Homecontroller;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ItemController;            //mendefinisikan penggunaan class ItemController dari namespace App/Http/Controller
+// use App\Http\Controllers\PageController;
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;               //mendefinisikan penggunaan class facades route  yang digunakan untuk mendefinisikan route-nya
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +27,11 @@ Route::get('/', function () {       //mendefinisikan route http get
 
 Route::resource('items', ItemController::class);    // mendefinisikan route untuk resource item, yang secara otomatis membuat route untuk semua operasi do conteroller crud
 
-Route::get('/hello', function(){
-    return 'Hello World';
-});
+// Route::get('/hello', function(){
+//     return 'Hello World';
+// });
+
+Route::get('/hello', [WelcomeController::class, 'hello']);
 
 Route::get('/world', function(){
     return 'World';
@@ -106,4 +115,16 @@ Route::get('/user/{name?}', function ($name=null){
 // //View Routes
 // Route::view('/welcome', 'welcome');
 // Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
+
+Route::get('/', [Homecontroller::class, 'index']);
+Route::get('/about', [AboutController::class, 'about']);
+Route::get('/articles/{id}', [ArticleController::class, 'articles']);
+
+Route::resource('photos', PhotoController::class)-> only([
+    'index', 'show'
+]);
+
+Route::resource('photos', PhotoController::class)->except([
+    'create', 'store', 'update', 'destroy'
+]);
 
